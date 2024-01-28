@@ -6,6 +6,7 @@ import os
 from aiogram.utils import executor
 from aiogram import Bot, Dispatcher
 import asyncio
+import random
 scheduler = AsyncIOScheduler()
 scheduler.start()
 
@@ -63,7 +64,7 @@ async def daily_post():
                    os.path.isfile(os.path.join(images_folder, f))]
 
     if image_files:
-        selected_image = image_files[0]
+        selected_image = image_files[random.randrange(0, len(image_files))]
 
         loop = asyncio.get_event_loop()
         loop.run_until_complete(await post_photo(post_text, selected_image))
@@ -72,7 +73,7 @@ async def daily_post():
         loop = asyncio.get_event_loop()
         loop.run_until_complete(send_error_notification())
 # Will not work choose the correct time or use interval
-scheduler.add_job(daily_post, "cron",minute="666", hour="666")
+scheduler.add_job(daily_post, "cron",minute="17", hour="20")
 
 async def on_startup(dp):
     await bot.send_message(chat_id, "All Works")
