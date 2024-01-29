@@ -73,7 +73,7 @@ async def daily_post():
         loop = asyncio.get_event_loop()
         loop.run_until_complete(send_error_notification())
 # Will not work choose the correct time or use interval
-scheduler.add_job(daily_post, "cron",minute="32", hour="22")
+scheduler.add_job(daily_post, "cron",minute="35", hour="22")
 
 async def on_startup(dp):
     await bot.send_message(chat_id, "All Works")
