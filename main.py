@@ -7,6 +7,7 @@ from aiogram.utils import executor
 from aiogram import Bot, Dispatcher
 import asyncio
 import random
+
 scheduler = AsyncIOScheduler()
 scheduler.start()
 
@@ -19,7 +20,6 @@ upload = VkUpload(vk_session)
 
 bot = Bot(token=telegram_bot_token)
 dp = Dispatcher(bot)
-
 
 images_folder = "images"
 
@@ -69,14 +69,19 @@ async def daily_post():
         loop = asyncio.get_event_loop()
         loop.run_until_complete(await post_photo(post_text, selected_image))
     else:
-        await bot.send_message(chat_id,"Нет изображений для поста.")
+        await bot.send_message(chat_id, "Нет изображений для поста.")
         loop = asyncio.get_event_loop()
         loop.run_until_complete(send_error_notification())
+
+
 # Will not work choose the correct time or use interval
-scheduler.add_job(daily_post, "cron",minute="17", hour="20")
+scheduler.add_job(daily_post, "cron", minute="17", hour="20")
+
 
 async def on_startup(dp):
     await bot.send_message(chat_id, "All Works")
 
+
+scheduler.add_job(on_startup(), "interval", minutes=120)
 if __name__ == '__main__':
-    executor.start_polling(dp, on_startup=on_startup,skip_updates=True)
+    executor.start_polling(dp, on_startup=on_startup, skip_updates=True)
