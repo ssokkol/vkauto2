@@ -83,6 +83,6 @@ async def on_startup(dp):
     await bot.send_message(chat_id, "All Works")
 
 
-scheduler.add_job(send(), "interval", minutes=120)
+scheduler.add_job(send, "interval", minutes=120)
 if __name__ == '__main__':
     executor.start_polling(dp, on_startup=on_startup, skip_updates=True)
